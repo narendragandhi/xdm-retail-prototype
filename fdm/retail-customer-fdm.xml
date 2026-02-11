@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Form Data Model Configuration for AEM Forms
+  Uses JSON Schema with inheritance patterns
+  
+  Reference: https://experienceleague.adobe.com/en/docs/experience-manager-cloud-service/content/forms/integrate/use-form-data-model/create-form-data-models
+-->
+<form-data-model>
+    <name>RetailCustomerFDM</name>
+    <title>Retail Customer Form Data Model with Inheritance</title>
+    <description>
+        FDM using JSON Schema with inheritance (allOf, definitions).
+        Demonstrates composition pattern for reusable schema components.
+    </description>
+    <version>1.0</version>
+    
+    <!-- JSON Schema Reference -->
+    <schema>
+        <location>schema/retail-customer-inheritance.json.schema.json</location>
+        <format>json-schema-2020-12</format>
+    </schema>
+    
+    <!-- Data Source Configuration (No AEP - Local/Generic) -->
+    <data-source>
+        <type>rest</type>
+        <authentication>
+            <type>none</type>
+        </authentication>
+    </data-source>
+    
+    <!-- Entity Definitions (Mapped from JSON Schema $defs) -->
+    <entities>
+        <!-- Base Person Entity -->
+        <entity name="basePerson">
+            <description>Core personal information from base schema</description>
+            <properties>
+                <property name="firstName" type="string" path="firstName"/>
+                <property name="lastName" type="string" path="lastName"/>
+                <property name="email" type="string" path="email" format="email"/>
+            </properties>
+        </entity>
+        
+        <!-- Contact Info Entity -->
+        <entity name="contactInfo">
+            <description>Contact information from reusable definition</description>
+            <properties>
+                <property name="phoneNumbers" type="array" path="phoneNumbers">
+                    <nested-properties>
+                        <property name="number" type="string"/>
+                        <property name="type" type="string"/>
+                    </nested-properties>
+                </property>
+                <property name="preferredContactMethod" type="string" path="preferredContactMethod"/>
+            </properties>
+        </entity>
+        
+        <!-- Address Entity (Reusable) -->
+        <entity name="address">
+            <description>Reusable address definition from $defs</description>
+            <properties>
+                <property name="street1" type="string" path="street1"/>
+                <property name="city" type="string" path="city"/>
+                <property name="state" type="string" path="state"/>
+                <property name="postalCode" type="string" path="postalCode"/>
+                <property name="country" type="string" path="country"/>
+                <property name="addressType" type="string" path="addressType"/>
+            </properties>
+        </entity>
+        
+        <!-- Loyalty Program Entity -->
+        <entity name="loyaltyProgram">
+            <description>Loyalty program information</description>
+            <properties>
+                <property name="loyaltyID" type="string" path="loyaltyID"/>
+                <property name="tier" type="string" path="tier"/>
+                <property name="pointsBalance" type="integer" path="pointsBalance"/>
+                <property name="joinDate" type="string" path="joinDate" format="date"/>
+            </properties>
+        </entity>
+        
+        <!-- Demographics Entity -->
+        <entity name="demographics">
+            <description>Demographic information</description>
+            <properties>
+                <property name="birthDate" type="string" path="birthDate" format="date"/>
+                <property name="gender" type="string" path="gender"/>
+                <property name="maritalStatus" type="string" path="maritalStatus"/>
+                <property name="householdSize" type="integer" path="householdSize"/>
+            </properties>
+        </entity>
+        
+        <!-- Preferences Entity -->
+        <entity name="preferences">
+            <description>Shopping preferences</description>
+            <properties>
+                <property name="favoriteCategories" type="array" path="favoriteCategories"/>
+                <property name="priceSensitivity" type="string" path="priceSensitivity"/>
+                <property name="preferredChannel" type="string" path="preferredChannel"/>
+            </properties>
+        </entity>
+        
+        <!-- Marketing Consent Entity -->
+        <entity name="marketingConsent">
+            <description>Marketing consent preferences</description>
+            <properties>
+                <property name="emailConsent" type="boolean" path="emailConsent"/>
+                <property name="smsConsent" type="boolean" path="smsConsent"/>
+                <property name="directMailConsent" type="boolean" path="directMailConsent"/>
+            </properties>
+        </entity>
+    </entities>
+    
+    <!-- Services -->
+    <services>
+        <!-- Read Service -->
+        <service name="readCustomer" type="query">
+            <description>Query customer data</description>
+            <operation name="get" type="get">
+                <input-params>
+                    <param name="customerId" type="string" required="false"/>
+                    <param name="email" type="string" required="false"/>
+                </input-params>
+                <output>
+                    <entity-ref>basePerson</entity-ref>
+                    <entity-ref>contactInfo</entity-ref>
+                    <entity-ref>loyaltyProgram</entity-ref>
+                </output>
+            </operation>
+            <operation name="search" type="get">
+                <input-params>
+                    <param name="limit" type="integer" default="10"/>
+                    <param name="offset" type="integer" default="0"/>
+                </input-params>
+                <output>
+                    <collection>true</collection>
+                    <entity-ref>basePerson</entity-ref>
+                </output>
+            </operation>
+        </service>
+        
+        <!-- Write Service -->
+        <service name="writeCustomer" type="write">
+            <description>Create or update customer data</description>
+            <operation name="create" type="post">
+                <input-entities>
+                    <entity-ref>basePerson</entity-ref>
+                    <entity-ref>contactInfo</entity-ref>
+                    <entity-ref>marketingConsent</entity-ref>
+                </input-entities>
+                <output>
+                    <property name="id" type="string"/>
+                    <property name="success" type="boolean"/>
+                </output>
+            </operation>
+            <operation name="update" type="patch">
+                <input-params>
+                    <param name="customerId" type="string" required="true"/>
+                </input-params>
+                <input-entities>
+                    <entity-ref>contactInfo</entity-ref>
+                    <entity-ref>preferences</entity-ref>
+                    <entity-ref>marketingConsent</entity-ref>
+                </input-entities>
+                <output>
+                    <property name="success" type="boolean"/>
+                </output>
+            </operation>
+        </service>
+        
+        <!-- Loyalty Service -->
+        <service name="loyaltyService" type="write">
+            <description>Loyalty program operations</description>
+            <operation name="getPoints" type="get">
+                <input-params>
+                    <param name="loyaltyId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>loyaltyProgram</entity-ref>
+                </output>
+            </operation>
+            <operation name="updatePoints" type="patch">
+                <input-params>
+                    <param name="loyaltyId" type="string" required="true"/>
+                    <param name="pointsChange" type="integer" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>loyaltyProgram</entity-ref>
+                </output>
+            </operation>
+        </service>
+    </services>
+    
+    <!-- Validation Rules -->
+    <validation>
+        <rules>
+            <rule name="emailRequired">
+                <condition>basePerson.email != null</condition>
+                <message>Email is required</message>
+            </rule>
+            <rule name="nameRequired">
+                <condition>basePerson.firstName != null AND basePerson.lastName != null</condition>
+                <message>First name and last name are required</message>
+            </rule>
+            <rule name="smsRequiresMobile">
+                <condition>contactInfo.preferredContactMethod == 'sms' implies contactInfo.phoneNumbers.some(p => p.type == 'mobile')</condition>
+                <message>SMS requires a mobile phone number</message>
+            </rule>
+        </rules>
+    </validation>
+    
+    <!-- Cache Configuration -->
+    <cache>
+        <enabled>true</enabled>
+        <ttl>300</ttl>
+        <max-entries>100</max-entries>
+    </cache>
+</form-data-model>

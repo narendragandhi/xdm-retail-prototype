@@ -1,0 +1,376 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Adaptive Form Template - Customer Registration
+  Uses Core Components with FDM binding
+  Compatible with AEM Forms 6.5 and Cloud Service
+  
+  Form Model: retail-customer-inheritance.json.schema.json
+  FDM: retail-customer-fdm.xml
+-->
+<afModel>
+    <title>Retail Customer Registration</title>
+    <description>Customer registration form using XDM-style JSON Schema with FDM binding</description>
+    <formModelVersion>2.0</formModelVersion>
+    
+    <adaptiveForm>
+        <properties>
+            <sling:resourceType>fd/af/components/adaptiveform</sling:resourceType>
+            <guideNodeName>guideContainer</guideNodeName>
+            <defaultSubmitType>FDM</defaultSubmitType>
+            <fdmReference>/conf/xdm-retail-prototype/settings/datasources/fdm/retailCustomerFDM</fdmReference>
+        </properties>
+        
+        <tabs>
+            <!-- Tab 1: Personal Information -->
+            <tab name="personalInfo" title="Personal Information">
+                <panel name="namePanel" title="Name">
+                    <field>
+                        <name>firstName</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>First Name</label>
+                        <placeholder>Enter first name</placeholder>
+                        <bindToFDM>
+                            <entity>basePerson</entity>
+                            <property>firstName</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>lastName</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>Last Name</label>
+                        <placeholder>Enter last name</placeholder>
+                        <bindToFDM>
+                            <entity>basePerson</entity>
+                            <property>lastName</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>email</name>
+                        <type>email</type>
+                        <required>true</required>
+                        <label>Email Address</label>
+                        <placeholder>name@example.com</placeholder>
+                        <validation>
+                            <pattern>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</pattern>
+                        </validation>
+                        <bindToFDM>
+                            <entity>basePerson</entity>
+                            <property>email</property>
+                        </bindToFDM>
+                    </field>
+                </panel>
+            </tab>
+            
+            <!-- Tab 2: Contact Information -->
+            <tab name="contactInfo" title="Contact Information">
+                <panel name="phonePanel" title="Phone Numbers">
+                    <repeater>
+                        <name>phoneNumbers</name>
+                        <label>Phone Numbers</label>
+                        <minOccurrences>0</minOccurrences>
+                        <maxOccurrences>3</maxOccurrences>
+                        <bindToFDM>
+                            <entity>contactInfo</entity>
+                            <property>phoneNumbers</property>
+                        </bindToFDM>
+                        
+                        <field>
+                            <name>number</name>
+                            <type>tel</type>
+                            <required>true</required>
+                            <label>Phone Number</label>
+                            <placeholder>+1 (555) 123-4567</placeholder>
+                        </field>
+                        
+                        <field>
+                            <name>type</name>
+                            <type>drop-down</type>
+                            <required>true</required>
+                            <label>Phone Type</label>
+                            <options>
+                                <option label="Mobile" value="mobile"/>
+                                <option label="Home" value="home"/>
+                                <option label="Work" value="work"/>
+                                <option label="Fax" value="fax"/>
+                            </options>
+                        </field>
+                        
+                        <field>
+                            <name>primary</name>
+                            <type>checkbox</type>
+                            <required>false</required>
+                            <label>This is my primary phone</label>
+                        </field>
+                        
+                        <field>
+                            <name>smsOptIn</name>
+                            <type>checkbox</type>
+                            <required>false</required>
+                            <label>I agree to receive SMS notifications</label>
+                        </field>
+                    </repeater>
+                </panel>
+                
+                <panel name="contactPreferencePanel" title="Contact Preference">
+                    <field>
+                        <name>preferredContactMethod</name>
+                        <type>radio-group</type>
+                        <required>true</required>
+                        <label>How should we contact you?</label>
+                        <options>
+                            <option label="Email" value="email"/>
+                            <option label="Phone" value="phone"/>
+                            <option label="SMS" value="sms"/>
+                            <option label="Direct Mail" value="mail"/>
+                        </options>
+                        <bindToFDM>
+                            <entity>contactInfo</entity>
+                            <property>preferredContactMethod</property>
+                        </bindToFDM>
+                    </field>
+                </panel>
+            </tab>
+            
+            <!-- Tab 3: Address -->
+            <tab name="addressInfo" title="Address">
+                <repeater>
+                    <name>addresses</name>
+                    <label>Addresses</label>
+                    <minOccurrences>1</minOccurrences>
+                    <maxOccurrences>2</maxOccurrences>
+                    <bindToFDM>
+                        <entity>address</entity>
+                        <property>addresses</property>
+                    </bindToFDM>
+                    
+                    <field>
+                        <name>addressType</name>
+                        <type>drop-down</type>
+                        <required>true</required>
+                        <label>Address Type</label>
+                        <options>
+                            <option label="Shipping Address" value="shipping"/>
+                            <option label="Billing Address" value="billing"/>
+                            <option label="Home Address" value="home"/>
+                            <option label="Work Address" value="work"/>
+                        </options>
+                    </field>
+                    
+                    <field>
+                        <name>street1</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>Street Address</label>
+                        <placeholder>123 Main Street</placeholder>
+                    </field>
+                    
+                    <field>
+                        <name>street2</name>
+                        <type>text</type>
+                        <required>false</required>
+                        <label>Apartment, Suite, etc.</label>
+                        <placeholder>Apt 4B (optional)</placeholder>
+                    </field>
+                    
+                    <field>
+                        <name>city</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>City</label>
+                    </field>
+                    
+                    <field>
+                        <name>state</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>State/Province</label>
+                    </field>
+                    
+                    <field>
+                        <name>postalCode</name>
+                        <type>text</type>
+                        <required>true</required>
+                        <label>Postal/ZIP Code</label>
+                        <validation>
+                            <pattern>^[0-9]{5}(-[0-9]{4})?$</pattern>
+                        </validation>
+                    </field>
+                    
+                    <field>
+                        <name>country</name>
+                        <type>drop-down</type>
+                        <required>true</required>
+                        <label>Country</label>
+                        <options>
+                            <option label="United States" value="US"/>
+                            <option label="Canada" value="CA"/>
+                            <option label="United Kingdom" value="GB"/>
+                            <option label="Germany" value="DE"/>
+                            <option label="France" value="FR"/>
+                            <option label="Australia" value="AU"/>
+                            <option label="Japan" value="JP"/>
+                        </options>
+                    </field>
+                    
+                    <field>
+                        <name>primary</name>
+                        <type>checkbox</type>
+                        <required>false</required>
+                        <label>This is my primary address</label>
+                    </field>
+                </repeater>
+            </tab>
+            
+            <!-- Tab 4: Loyalty Program -->
+            <tab name="loyaltyInfo" title="Loyalty Program">
+                <panel name="loyaltyJoinPanel" title="Join Our Rewards Program">
+                    <field>
+                        <name>joinLoyalty</name>
+                        <type>checkbox</type>
+                        <required>false</required>
+                        <label>Join our Loyalty Rewards Program and start earning points on every purchase!</label>
+                    </field>
+                </panel>
+                
+                <panel name="loyaltyInfoPanel" title="Your Loyalty Status">
+                    <field>
+                        <name>loyaltyID</name>
+                        <type>text</type>
+                        <required>false</required>
+                        <label>Loyalty ID</label>
+                        <readOnly>true</readOnly>
+                        <bindToFDM>
+                            <entity>loyaltyProgram</entity>
+                            <property>loyaltyID</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>tier</name>
+                        <type>drop-down</type>
+                        <required>false</required>
+                        <label>Loyalty Tier</label>
+                        <options>
+                            <option label="Bronze" value="bronze"/>
+                            <option label="Silver" value="silver"/>
+                            <option label="Gold" value="gold"/>
+                            <option label="Platinum" value="platinum"/>
+                            <option label="Diamond" value="diamond"/>
+                        </options>
+                        <bindToFDM>
+                            <entity>loyaltyProgram</entity>
+                            <property>tier</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>pointsBalance</name>
+                        <type>numeric</type>
+                        <required>false</required>
+                        <label>Points Balance</label>
+                        <readOnly>true</readOnly>
+                        <bindToFDM>
+                            <entity>loyaltyProgram</entity>
+                            <property>pointsBalance</property>
+                        </bindToFDM>
+                    </field>
+                </panel>
+            </tab>
+            
+            <!-- Tab 5: Marketing Consent -->
+            <tab name="consentInfo" title="Marketing Preferences">
+                <panel name="marketingConsentPanel" title="Communication Preferences">
+                    <field>
+                        <name>emailConsent</name>
+                        <type>checkbox</type>
+                        <required>false</required>
+                        <label>I would like to receive promotional emails and special offers</label>
+                        <bindToFDM>
+                            <entity>marketingConsent</entity>
+                            <property>emailConsent</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>smsConsent</name>
+                        <type>checkbox</type>
+                        <required>false</required>
+                        <label>I would like to receive SMS offers and alerts</label>
+                        <bindToFDM>
+                            <entity>marketingConsent</entity>
+                            <property>smsConsent</property>
+                        </bindToFDM>
+                    </field>
+                    
+                    <field>
+                        <name>directMailConsent</name>
+                        <type>checkbox</type>
+                        <required>false</required>
+                        <label>I would like to receive promotional mailings</label>
+                        <bindToFDM>
+                            <entity>marketingConsent</entity>
+                            <property>directMailConsent</property>
+                        </bindToFDM>
+                    </field>
+                </panel>
+            </tab>
+        </tabs>
+        
+        <actions>
+            <submit>
+                <label>Submit Registration</label>
+                <successMessage>Thank you for registering! Your account has been created.</successMessage>
+                <fdmService>
+                    <serviceName>writeCustomer</serviceName>
+                    <operation>create</operation>
+                </fdmService>
+            </submit>
+            
+            <save>
+                <label>Save Draft</label>
+                <fdmService>
+                    <serviceName>writeCustomer</serviceName>
+                    <operation>update</operation>
+                </fdmService>
+            </save>
+            
+            <reset>
+                <label>Reset Form</label>
+            </reset>
+        </actions>
+        
+        <rules>
+            <rule name="validateSMSConsent">
+                <condition>
+                    <![CDATA[marketingConsent.smsConsent == true]]>
+                </condition>
+                <action>
+                    <validate>
+                        <expression>
+                            <![CDATA[contactInfo.phoneNumbers.some(p => p.type == 'mobile' && p.smsOptIn == true)]]>
+                        </expression>
+                    </validate>
+                </action>
+                <message>SMS consent requires a mobile phone number with SMS opt-in</message>
+            </rule>
+            
+            <rule name="validateEmailRequired">
+                <condition>
+                    <![CDATA[true]]>
+                </condition>
+                <action>
+                    <validate>
+                        <expression>
+                            <![CDATA[basePerson.email != null && basePerson.email.match(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/)]]>
+                        </expression>
+                    </validate>
+                </action>
+                <message>Please enter a valid email address</message>
+            </rule>
+        </rules>
+    </adaptiveForm>
+</afModel>

@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/address.schema.json",
+  "title": "Address Definition",
+  "description": "Reusable address component for schema inheritance",
+  "$defs": {
+    "address": {
+      "type": "object",
+      "properties": {
+        "street1": {
+          "type": "string",
+          "title": "Street Address Line 1",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "street2": {
+          "type": "string",
+          "title": "Street Address Line 2",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "title": "City",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "state": {
+          "type": "string",
+          "title": "State/Province",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal/ZIP Code",
+          "minLength": 3,
+          "maxLength": 20,
+          "pattern": "^[0-9A-Za-z\\-\\s]+$"
+        },
+        "country": {
+          "type": "string",
+          "title": "Country",
+          "enum": [
+            "US", "CA", "GB", "DE", "FR", "AU", "JP", "CN", "IN", "BR",
+            "MX", "ES", "IT", "NL", "SE", "NO", "DK", "FI", "CH", "AT"
+          ]
+        },
+        "addressType": {
+          "type": "string",
+          "title": "Address Type",
+          "enum": ["shipping", "billing", "home", "work", "seasonal"],
+          "default": "home"
+        },
+        "primary": {
+          "type": "boolean",
+          "title": "Primary Address",
+          "default": false
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date",
+          "title": "Valid From Date"
+        }
+      },
+      "required": ["street1", "city", "state", "postalCode", "country"]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/address"
+}

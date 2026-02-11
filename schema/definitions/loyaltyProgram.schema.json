@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/loyaltyProgram.schema.json",
+  "title": "Loyalty Program Definition",
+  "description": "Reusable loyalty program component",
+  "$defs": {
+    "loyaltyProgram": {
+      "type": "object",
+      "properties": {
+        "loyaltyID": {
+          "type": "string",
+          "title": "Loyalty Program ID",
+          "description": "Unique identifier for loyalty membership",
+          "pattern": "^LOY-[0-9]{6}$"
+        },
+        "tier": {
+          "type": "string",
+          "title": "Loyalty Tier",
+          "description": "Current loyalty tier level",
+          "enum": ["bronze", "silver", "gold", "platinum", "diamond"],
+          "enumNames": ["Bronze", "Silver", "Gold", "Platinum", "Diamond"]
+        },
+        "tierStatus": {
+          "type": "string",
+          "title": "Tier Status",
+          "enum": ["active", "inactive", "suspended", "expired"],
+          "default": "active"
+        },
+        "joinDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Member Since",
+          "description": "Date when loyalty membership was created"
+        },
+        "pointsBalance": {
+          "type": "integer",
+          "title": "Current Points Balance",
+          "minimum": 0,
+          "default": 0
+        },
+        "pointsEarnedYTD": {
+          "type": "integer",
+          "title": "Points Earned Year to Date",
+          "minimum": 0,
+          "default": 0
+        },
+        "pointsRedeemedYTD": {
+          "type": "integer",
+          "title": "Points Redeemed Year to Date",
+          "minimum": 0,
+          "default": 0
+        },
+        "lifetimePoints": {
+          "type": "integer",
+          "title": "Lifetime Points Earned",
+          "minimum": 0,
+          "default": 0
+        },
+        "nextTierThreshold": {
+          "type": "integer",
+          "title": "Points to Next Tier",
+          "description": "Points needed to reach next tier",
+          "minimum": 0
+        },
+        "benefits": {
+          "type": "array",
+          "title": "Active Benefits",
+          "description": "List of active loyalty benefits",
+          "items": {
+            "type": "string",
+            "enum": [
+              "free-shipping",
+              "birthday-offer",
+              "early-access",
+              "gift-wrapping",
+              "priority-support",
+              "exclusive-events",
+              "personal-stylist",
+              "price-protection"
+            ]
+          }
+        },
+        "expirationDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Points Expiration Date",
+          "description": "Date when points will expire"
+        }
+      },
+      "required": ["loyaltyID", "tier"]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/loyaltyProgram"
+}

@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/contactInfo.schema.json",
+  "title": "Contact Information Definition",
+  "description": "Reusable contact information component",
+  "$defs": {
+    "contactInfo": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "Email Address",
+          "minLength": 5,
+          "maxLength": 100,
+          "examples": ["user@example.com"]
+        },
+        "phoneNumbers": {
+          "type": "array",
+          "title": "Phone Numbers",
+          "description": "List of phone numbers",
+          "minItems": 0,
+          "maxItems": 5,
+          "items": {
+            "type": "object",
+            "title": "Phone Number",
+            "properties": {
+              "number": {
+                "type": "string",
+                "title": "Phone Number",
+                "description": "Phone number with country code"
+              },
+              "type": {
+                "type": "string",
+                "title": "Phone Type",
+                "enum": ["mobile", "home", "work", "fax"],
+                "default": "home"
+              },
+              "primary": {
+                "type": "boolean",
+                "title": "Primary Phone",
+                "default": false
+              },
+              "smsOptIn": {
+                "type": "boolean",
+                "title": "SMS Opt-In",
+                "description": "Opt-in for SMS notifications",
+                "default": false
+              }
+            },
+            "required": ["number", "type"]
+          }
+        },
+        "preferredContactMethod": {
+          "type": "string",
+          "title": "Preferred Contact Method",
+          "enum": ["email", "phone", "sms", "mail", "in-store"],
+          "default": "email"
+        },
+        "bestTimeToContact": {
+          "type": "string",
+          "title": "Best Time to Contact",
+          "enum": ["morning", "afternoon", "evening", "anytime"],
+          "default": "anytime"
+        }
+      },
+      "required": ["email"]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/contactInfo"
+}

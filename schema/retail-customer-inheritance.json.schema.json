@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/retail-customer.schema.json",
+  "title": "Retail Customer Schema with Inheritance",
+  "description": "XDM-style schema demonstrating inheritance patterns using allOf and definitions",
+  "$defs": {
+    "basePerson": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First Name",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "lastName": {
+          "type": "string",
+          "title": "Last Name",
+          "minLength": 1,
+          "maxLength": 50
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "Email Address"
+        }
+      },
+      "required": ["firstName", "lastName", "email"]
+    },
+    "contactInfo": {
+      "type": "object",
+      "properties": {
+        "phoneNumbers": {
+          "type": "array",
+          "title": "Phone Numbers",
+          "items": {
+            "type": "object",
+            "properties": {
+              "number": { "type": "string", "title": "Phone Number" },
+              "type": {
+                "type": "string",
+                "enum": ["mobile", "home", "work", "fax"]
+              }
+            }
+          }
+        },
+        "preferredContactMethod": {
+          "type": "string",
+          "enum": ["email", "phone", "sms", "mail"]
+        }
+      }
+    },
+    "address": {
+      "type": "object",
+      "properties": {
+        "street1": { "type": "string", "title": "Street Address" },
+        "city": { "type": "string", "title": "City" },
+        "state": { "type": "string", "title": "State" },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal Code",
+          "pattern": "^[0-9]{5}(-[0-9]{4})?$"
+        },
+        "country": { "type": "string", "title": "Country" },
+        "addressType": {
+          "type": "string",
+          "enum": ["shipping", "billing", "home", "work"]
+        }
+      },
+      "required": ["street1", "city", "state", "postalCode", "country"]
+    },
+    "loyaltyProgram": {
+      "type": "object",
+      "properties": {
+        "loyaltyID": { "type": "string", "title": "Loyalty ID" },
+        "tier": {
+          "type": "string",
+          "enum": ["bronze", "silver", "gold", "platinum"]
+        },
+        "pointsBalance": { "type": "integer", "title": "Points Balance" },
+        "joinDate": { "type": "string", "format": "date" }
+      }
+    },
+    "demographics": {
+      "type": "object",
+      "properties": {
+        "birthDate": { "type": "string", "format": "date", "title": "Date of Birth" },
+        "gender": {
+          "type": "string",
+          "enum": ["male", "female", "non-binary", "prefer-not-to-say"]
+        },
+        "maritalStatus": {
+          "type": "string",
+          "enum": ["single", "married", "divorced", "widowed"]
+        },
+        "householdSize": { "type": "integer", "minimum": 1, "maximum": 20 }
+      }
+    },
+    "preferences": {
+      "type": "object",
+      "properties": {
+        "favoriteCategories": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "priceSensitivity": {
+          "type": "string",
+          "enum": ["low", "medium", "high"]
+        },
+        "preferredChannel": {
+          "type": "string",
+          "enum": ["online", "mobile", "in-store", "phone"]
+        }
+      }
+    },
+    "marketingConsent": {
+      "type": "object",
+      "properties": {
+        "emailConsent": { "type": "boolean", "title": "Email Consent" },
+        "smsConsent": { "type": "boolean", "title": "SMS Consent" },
+        "directMailConsent": { "type": "boolean", "title": "Direct Mail Consent" }
+      }
+    }
+  },
+  "type": "object",
+  "allOf": [
+    { "$ref": "#/$defs/basePerson" },
+    { "$ref": "#/$defs/contactInfo" },
+    {
+      "properties": {
+        "addresses": {
+          "type": "array",
+          "title": "Addresses",
+          "items": { "$ref": "#/$defs/address" }
+        }
+      }
+    },
+    {
+      "properties": {
+        "loyaltyInfo": { "$ref": "#/$defs/loyaltyProgram" }
+      }
+    },
+    {
+      "properties": {
+        "demographicInfo": { "$ref": "#/$defs/demographics" }
+      }
+    },
+    {
+      "properties": {
+        "shoppingPreferences": { "$ref": "#/$defs/preferences" }
+      }
+    },
+    {
+      "properties": {
+        "consentInfo": { "$ref": "#/$defs/marketingConsent" }
+      }
+    }
+  ],
+  "required": ["firstName", "lastName", "email"]
+}
