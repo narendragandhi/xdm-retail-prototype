@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft-04/schema#",
+  "title": "Test Schema Inheritance V4",
+  "description": "TEST SCHEMA - JSON Schema v4 with definitions for AEM Forms Cloud Service",
+  "definitions": {
+    "basePerson": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First Name"
+        },
+        "lastName": {
+          "type": "string",
+          "title": "Last Name"
+        }
+      },
+      "required": ["firstName", "lastName"]
+    },
+    "contactInfo": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "Email Address"
+        },
+        "phone": {
+          "type": "string",
+          "title": "Phone Number"
+        }
+      }
+    },
+    "addressInfo": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "title": "Street"
+        },
+        "city": {
+          "type": "string",
+          "title": "City"
+        },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal Code"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "allOf": [
+    { "$ref": "#/definitions/basePerson" },
+    { "$ref": "#/definitions/contactInfo" },
+    { "$ref": "#/definitions/addressInfo" }
+  ],
+  "required": ["firstName", "lastName"]
+}

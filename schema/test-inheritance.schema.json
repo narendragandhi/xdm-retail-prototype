@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/test-inheritance.schema.json",
+  "title": "Test Schema Inheritance",
+  "description": "TEST SCHEMA - To verify if allOf inheritance works in AEM Forms Cloud Service",
+  "$defs": {
+    "basePerson": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "title": "First Name"
+        },
+        "lastName": {
+          "type": "string",
+          "title": "Last Name"
+        }
+      },
+      "required": ["firstName", "lastName"]
+    },
+    "contactInfo": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "format": "email",
+          "title": "Email Address"
+        },
+        "phone": {
+          "type": "string",
+          "title": "Phone Number"
+        }
+      }
+    },
+    "addressInfo": {
+      "type": "object",
+      "properties": {
+        "street": {
+          "type": "string",
+          "title": "Street"
+        },
+        "city": {
+          "type": "string",
+          "title": "City"
+        },
+        "postalCode": {
+          "type": "string",
+          "title": "Postal Code"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "allOf": [
+    { "$ref": "#/$defs/basePerson" },
+    { "$ref": "#/$defs/contactInfo" },
+    { "$ref": "#/$defs/addressInfo" }
+  ],
+  "required": ["firstName", "lastName"]
+}

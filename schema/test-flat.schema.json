@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft-04/schema#",
+  "title": "Test Schema Flat (No Inheritance)",
+  "description": "TEST SCHEMA - Flat schema without inheritance for Cloud Service fallback",
+  "type": "object",
+  "properties": {
+    "firstName": {
+      "type": "string",
+      "title": "First Name"
+    },
+    "lastName": {
+      "type": "string",
+      "title": "Last Name"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "Email Address"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Phone Number"
+    },
+    "street": {
+      "type": "string",
+      "title": "Street"
+    },
+    "city": {
+      "type": "string",
+      "title": "City"
+    },
+    "postalCode": {
+      "type": "string",
+      "title": "Postal Code"
+    }
+  },
+  "required": ["firstName", "lastName", "email"]
+}
