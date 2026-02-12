@@ -106,6 +106,126 @@
                 <property name="emailConsent" type="boolean" path="emailConsent"/>
                 <property name="smsConsent" type="boolean" path="smsConsent"/>
                 <property name="directMailConsent" type="boolean" path="directMailConsent"/>
+                <property name="phoneConsent" type="boolean" path="phoneConsent"/>
+                <property name="thirdPartyConsent" type="boolean" path="thirdPartyConsent"/>
+                <property name="personalizedAdsConsent" type="boolean" path="personalizedAdsConsent"/>
+                <property name="dataSharingConsent" type="boolean" path="dataSharingConsent"/>
+                <property name="consentDate" type="string" path="consentDate" format="date"/>
+                <property name="consentSource" type="string" path="consentSource"/>
+                <property name="optOutAllMarketing" type="boolean" path="optOutAllMarketing"/>
+            </properties>
+        </entity>
+
+        <!-- Account Entity -->
+        <entity name="account">
+            <description>Account information and settings</description>
+            <properties>
+                <property name="accountID" type="string" path="accountID"/>
+                <property name="accountStatus" type="string" path="accountStatus"/>
+                <property name="accountType" type="string" path="accountType"/>
+                <property name="createdDate" type="string" path="createdDate" format="date"/>
+                <property name="lastActivityDate" type="string" path="lastActivityDate" format="date"/>
+                <property name="preferredLanguage" type="string" path="preferredLanguage"/>
+                <property name="preferredCurrency" type="string" path="preferredCurrency"/>
+                <property name="timeZone" type="string" path="timeZone"/>
+            </properties>
+        </entity>
+
+        <!-- Transaction Entity -->
+        <entity name="transaction">
+            <description>Transaction record for statements</description>
+            <properties>
+                <property name="transactionID" type="string" path="transactionID"/>
+                <property name="transactionDate" type="string" path="transactionDate" format="date-time"/>
+                <property name="transactionType" type="string" path="transactionType"/>
+                <property name="amount" type="number" path="amount"/>
+                <property name="currency" type="string" path="currency"/>
+                <property name="pointsEarned" type="integer" path="pointsEarned"/>
+                <property name="pointsRedeemed" type="integer" path="pointsRedeemed"/>
+                <property name="channel" type="string" path="channel"/>
+                <property name="orderNumber" type="string" path="orderNumber"/>
+                <property name="status" type="string" path="status"/>
+                <property name="documentOfRecord" type="boolean" path="documentOfRecord"/>
+            </properties>
+        </entity>
+
+        <!-- Transaction Summary Entity -->
+        <entity name="transactionSummary">
+            <description>Aggregated transaction statistics</description>
+            <properties>
+                <property name="totalPurchases" type="integer" path="totalPurchases"/>
+                <property name="totalSpend" type="number" path="totalSpend"/>
+                <property name="averageOrderValue" type="number" path="averageOrderValue"/>
+                <property name="totalPointsEarned" type="integer" path="totalPointsEarned"/>
+                <property name="totalPointsRedeemed" type="integer" path="totalPointsRedeemed"/>
+                <property name="favoriteCategory" type="string" path="favoriteCategory"/>
+                <property name="lastPurchaseDate" type="string" path="lastPurchaseDate" format="date"/>
+                <property name="preferredChannel" type="string" path="preferredChannel"/>
+            </properties>
+        </entity>
+
+        <!-- Subscription Entity -->
+        <entity name="subscription">
+            <description>Newsletter and subscription preferences</description>
+            <properties>
+                <property name="subscriptionID" type="string" path="subscriptionID"/>
+                <property name="subscriptionType" type="string" path="subscriptionType"/>
+                <property name="status" type="string" path="status"/>
+                <property name="subscribedDate" type="string" path="subscribedDate" format="date"/>
+                <property name="frequency" type="string" path="frequency"/>
+                <property name="format" type="string" path="format"/>
+                <property name="doubleOptIn" type="boolean" path="doubleOptIn"/>
+            </properties>
+        </entity>
+
+        <!-- Communication Preferences Entity -->
+        <entity name="communicationPreferences">
+            <description>Communication and document preferences for IC</description>
+            <properties>
+                <property name="languagePreference" type="string" path="languagePreference"/>
+                <property name="formatPreference" type="string" path="formatPreference"/>
+                <property name="templateVariant" type="string" path="interactiveCommunicationSettings/templateVariant"/>
+                <property name="personalizationLevel" type="string" path="interactiveCommunicationSettings/personalizationLevel"/>
+                <property name="includeQRCode" type="boolean" path="interactiveCommunicationSettings/includeQRCode"/>
+                <property name="includeSurvey" type="boolean" path="interactiveCommunicationSettings/includeSurvey"/>
+                <property name="statementType" type="string" path="statementPreferences/statementType"/>
+                <property name="includeTransactionGraph" type="boolean" path="statementPreferences/includeTransactionGraph"/>
+                <property name="deliveryMethod" type="string" path="statementPreferences/deliveryMethod"/>
+                <property name="promotionalFrequency" type="string" path="frequencyPreferences/promotionalFrequency"/>
+                <property name="transactionalFrequency" type="string" path="frequencyPreferences/transactionalFrequency"/>
+            </properties>
+        </entity>
+
+        <!-- Interaction Event Entity -->
+        <entity name="interactionEvent">
+            <description>Customer interaction event</description>
+            <properties>
+                <property name="interactionID" type="string" path="interactionID"/>
+                <property name="timestamp" type="string" path="timestamp" format="date-time"/>
+                <property name="channel" type="string" path="channel"/>
+                <property name="type" type="string" path="type"/>
+                <property name="campaignID" type="string" path="campaignID"/>
+                <property name="campaignName" type="string" path="campaignName"/>
+                <property name="pageURL" type="string" path="pageURL"/>
+                <property name="productID" type="string" path="productID"/>
+                <property name="engagementScore" type="number" path="engagementScore"/>
+                <property name="duration" type="integer" path="duration"/>
+            </properties>
+        </entity>
+
+        <!-- Engagement Summary Entity -->
+        <entity name="engagementSummary">
+            <description>Aggregated engagement metrics</description>
+            <properties>
+                <property name="totalInteractions" type="integer" path="totalInteractions"/>
+                <property name="emailOpenRate" type="number" path="emailOpenRate"/>
+                <property name="emailClickRate" type="number" path="emailClickRate"/>
+                <property name="preferredChannel" type="string" path="preferredChannel"/>
+                <property name="lastEngagementDate" type="string" path="lastEngagementDate" format="date"/>
+                <property name="avgEngagementScore" type="number" path="avgEngagementScore"/>
+                <property name="customerJourneyStage" type="string" path="customerJourneyStage"/>
+                <property name="npsScore" type="integer" path="npsScore"/>
+                <property name="satisfactionScore" type="number" path="satisfactionScore"/>
             </properties>
         </entity>
     </entities>
@@ -185,6 +305,243 @@
                 </input-params>
                 <output>
                     <entity-ref>loyaltyProgram</entity-ref>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Transaction Service -->
+        <service name="transactionService" type="read">
+            <description>Transaction history and statement generation</description>
+            <operation name="getTransactions" type="get">
+                <description>Get customer transactions</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="startDate" type="string" format="date" required="false"/>
+                    <param name="endDate" type="string" format="date" required="false"/>
+                    <param name="limit" type="integer" default="50"/>
+                    <param name="offset" type="integer" default="0"/>
+                </input-params>
+                <output>
+                    <collection>true</collection>
+                    <entity-ref>transaction</entity-ref>
+                </output>
+            </operation>
+            <operation name="getTransactionSummary" type="get">
+                <description>Get aggregated transaction summary</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>transactionSummary</entity-ref>
+                </output>
+            </operation>
+            <operation name="generateStatement" type="get">
+                <description>Generate statement document</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="statementType" type="string" required="true"/>
+                    <param name="periodStart" type="string" format="date" required="true"/>
+                    <param name="periodEnd" type="string" format="date" required="true"/>
+                </input-params>
+                <output>
+                    <property name="statementId" type="string"/>
+                    <property name="documentUrl" type="string"/>
+                    <property name="generatedDate" type="string" format="date-time"/>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Communication Service -->
+        <service name="communicationService" type="write">
+            <description>Communication preferences and delivery</description>
+            <operation name="getPreferences" type="get">
+                <description>Get communication preferences</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>communicationPreferences</entity-ref>
+                </output>
+            </operation>
+            <operation name="updatePreferences" type="patch">
+                <description>Update communication preferences</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <input-entities>
+                    <entity-ref>communicationPreferences</entity-ref>
+                </input-entities>
+                <output>
+                    <property name="success" type="boolean"/>
+                    <property name="updatedDate" type="string" format="date-time"/>
+                </output>
+            </operation>
+            <operation name="sendCommunication" type="post">
+                <description>Trigger outbound communication</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="communicationType" type="string" required="true"/>
+                    <param name="channel" type="string" required="true"/>
+                    <param name="templateId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <property name="communicationId" type="string"/>
+                    <property name="status" type="string"/>
+                    <property name="sentDate" type="string" format="date-time"/>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Subscription Service -->
+        <service name="subscriptionService" type="write">
+            <description>Subscription management</description>
+            <operation name="getSubscriptions" type="get">
+                <description>Get all subscriptions for customer</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <collection>true</collection>
+                    <entity-ref>subscription</entity-ref>
+                </output>
+            </operation>
+            <operation name="subscribe" type="post">
+                <description>Create new subscription</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="subscriptionType" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>subscription</entity-ref>
+                </output>
+            </operation>
+            <operation name="unsubscribe" type="patch">
+                <description>Cancel subscription</description>
+                <input-params>
+                    <param name="subscriptionId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <property name="success" type="boolean"/>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Engagement Service -->
+        <service name="engagementService" type="read">
+            <description>Customer engagement tracking</description>
+            <operation name="getInteractions" type="get">
+                <description>Get interaction history</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="limit" type="integer" default="100"/>
+                    <param name="offset" type="integer" default="0"/>
+                </input-params>
+                <output>
+                    <collection>true</collection>
+                    <entity-ref>interactionEvent</entity-ref>
+                </output>
+            </operation>
+            <operation name="getEngagementSummary" type="get">
+                <description>Get aggregated engagement metrics</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>engagementSummary</entity-ref>
+                </output>
+            </operation>
+            <operation name="trackInteraction" type="post">
+                <description>Record new interaction event</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="channel" type="string" required="true"/>
+                    <param name="type" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <property name="interactionId" type="string"/>
+                    <property name="success" type="boolean"/>
+                </output>
+            </operation>
+            <operation name="getCustomerJourneyStage" type="get">
+                <description>Get current journey stage</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <property name="stage" type="string"/>
+                    <property name="score" type="number"/>
+                    <property name="recommendations" type="array"/>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Account Service -->
+        <service name="accountService" type="write">
+            <description>Account management operations</description>
+            <operation name="getAccount" type="get">
+                <description>Get account details</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <entity-ref>account</entity-ref>
+                </output>
+            </operation>
+            <operation name="updateAccount" type="patch">
+                <description>Update account settings</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                </input-params>
+                <input-entities>
+                    <entity-ref>account</entity-ref>
+                </input-entities>
+                <output>
+                    <property name="success" type="boolean"/>
+                </output>
+            </operation>
+            <operation name="verifyIdentity" type="post">
+                <description>Initiate identity verification</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="verificationType" type="string" required="true"/>
+                </input-params>
+                <output>
+                    <property name="verificationId" type="string"/>
+                    <property name="status" type="string"/>
+                </output>
+            </operation>
+        </service>
+
+        <!-- Document Generation Service -->
+        <service name="documentService" type="write">
+            <description>Document generation for interactive communications</description>
+            <operation name="generateDocument" type="post">
+                <description>Generate personalized document</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="documentType" type="string" required="true"/>
+                    <param name="templateVariant" type="string" required="false"/>
+                    <param name="language" type="string" required="false"/>
+                    <param name="format" type="string" required="false"/>
+                </input-params>
+                <output>
+                    <property name="documentId" type="string"/>
+                    <property name="downloadUrl" type="string"/>
+                    <property name="expiresAt" type="string" format="date-time"/>
+                </output>
+            </operation>
+            <operation name="getDocumentHistory" type="get">
+                <description>Get previously generated documents</description>
+                <input-params>
+                    <param name="accountId" type="string" required="true"/>
+                    <param name="limit" type="integer" default="20"/>
+                </input-params>
+                <output>
+                    <collection>true</collection>
+                    <property name="documentId" type="string"/>
+                    <property name="documentType" type="string"/>
+                    <property name="generatedDate" type="string" format="date-time"/>
+                    <property name="status" type="string"/>
                 </output>
             </operation>
         </service>

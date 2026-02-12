@@ -1,0 +1,175 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/account.schema.json",
+  "title": "Account and Subscription Definition",
+  "description": "Reusable account and subscription components for interactive communications",
+  "$defs": {
+    "account": {
+      "type": "object",
+      "properties": {
+        "accountID": {
+          "type": "string",
+          "title": "Account ID",
+          "pattern": "^ACC-[0-9]{8}$"
+        },
+        "accountStatus": {
+          "type": "string",
+          "enum": ["active", "suspended", "closed", "pending-verification"],
+          "default": "active"
+        },
+        "accountType": {
+          "type": "string",
+          "enum": ["personal", "business", "corporate", "premium", "guest"],
+          "default": "personal"
+        },
+        "createdDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Account Created Date"
+        },
+        "lastActivityDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Last Activity Date"
+        },
+        "preferredLanguage": {
+          "type": "string",
+          "enum": ["en-US", "en-GB", "fr-FR", "de-DE", "es-ES", "it-IT", "ja-JP", "zh-CN"],
+          "default": "en-US"
+        },
+        "preferredCurrency": {
+          "type": "string",
+          "enum": ["USD", "EUR", "GBP", "CAD", "AUD", "JPY"],
+          "default": "USD"
+        },
+        "timeZone": {
+          "type": "string",
+          "enum": ["America/New_York", "America/Los_Angeles", "America/Chicago", "Europe/London", "Europe/Paris", "Asia/Tokyo"],
+          "default": "America/New_York"
+        },
+        "verificationStatus": {
+          "type": "object",
+          "properties": {
+            "emailVerified": { "type": "boolean", "default": false },
+            "phoneVerified": { "type": "boolean", "default": false },
+            "identityVerified": { "type": "boolean", "default": false },
+            "addressVerified": { "type": "boolean", "default": false }
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "passwordLastChanged": { "type": "string", "format": "date" },
+            "twoFactorEnabled": { "type": "boolean", "default": false },
+            "loginAttempts": { "type": "integer", "minimum": 0, "default": 0 },
+            "securityQuestionsSet": { "type": "boolean", "default": false }
+          }
+        },
+        "notificationSettings": {
+          "type": "object",
+          "properties": {
+            "transactionAlerts": {
+              "type": "boolean",
+              "title": "Transaction Alerts",
+              "default": true
+            },
+            "securityAlerts": {
+              "type": "boolean",
+              "title": "Security Alerts",
+              "default": true
+            },
+            "marketingAlerts": {
+              "type": "boolean",
+              "title": "Marketing Alerts",
+              "default": false
+            },
+            "pushNotifications": {
+              "type": "boolean",
+              "title": "Push Notifications",
+              "default": false
+            },
+            "alertFrequency": {
+              "type": "string",
+              "enum": ["instant", "daily-digest", "weekly-digest", "none"],
+              "default": "instant"
+            }
+          }
+        }
+      },
+      "required": ["accountID", "accountStatus", "accountType"]
+    },
+    "subscription": {
+      "type": "object",
+      "properties": {
+        "subscriptionID": {
+          "type": "string",
+          "title": "Subscription ID"
+        },
+        "subscriptionType": {
+          "type": "string",
+          "enum": ["newsletter", "product-updates", "loyalty-rewards", "VIP-access", "custom"],
+          "title": "Subscription Type"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "paused", "cancelled", "expired"],
+          "default": "active"
+        },
+        "subscribedDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Subscribed Date"
+        },
+        "unsubscribedDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Unsubscribed Date"
+        },
+        "source": {
+          "type": "string",
+          "enum": ["web", "mobile", "in-store", "phone", "partner"],
+          "title": "Subscription Source"
+        },
+        "frequency": {
+          "type": "string",
+          "enum": ["daily", "weekly", "monthly", "quarterly", "on-demand"],
+          "default": "weekly"
+        },
+        "format": {
+          "type": "string",
+          "enum": ["html", "text", "both"],
+          "default": "both"
+        },
+        "categories": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["new-arrivals", "sales", "electronics", "clothing", "home-garden", "beauty", "sports", "all"]
+          }
+        },
+        "consentDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Consent Date"
+        },
+        "consentSource": {
+          "type": "string",
+          "title": "Consent Source"
+        },
+        "doubleOptIn": {
+          "type": "boolean",
+          "title": "Double Opt-In Required",
+          "default": false
+        },
+        "doubleOptInDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Double Opt-In Date"
+        }
+      },
+      "required": ["subscriptionID", "subscriptionType", "status"]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/account"
+}

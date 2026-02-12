@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/interactionHistory.schema.json",
+  "title": "Interaction History Definition",
+  "description": "Reusable interaction history component for customer engagement tracking",
+  "$defs": {
+    "interactionEvent": {
+      "type": "object",
+      "properties": {
+        "interactionID": {
+          "type": "string",
+          "title": "Interaction ID"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Interaction Timestamp"
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["email", "sms", "push", "web", "mobile-app", "phone", "chat", "in-store", "social"],
+          "title": "Interaction Channel"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "open",
+            "click",
+            "purchase",
+            "visit",
+            "cart-add",
+            "cart-abandon",
+            "wishlist-add",
+            "review-submit",
+            "support-contact",
+            "question-submit",
+            "feedback-submit",
+            "survey-complete",
+            "referral",
+            "share"
+          ],
+          "title": "Interaction Type"
+        },
+        "campaignID": {
+          "type": "string",
+          "title": "Associated Campaign ID"
+        },
+        "campaignName": {
+          "type": "string",
+          "title": "Campaign Name"
+        },
+        "communicationID": {
+          "type": "string",
+          "title": "Communication/Message ID"
+        },
+        "documentID": {
+          "type": "string",
+          "title": "Document of Record ID"
+        },
+        "pageURL": {
+          "type": "string",
+          "title": "Page URL or Screen Name"
+        },
+        "productID": {
+          "type": "string",
+          "title": "Product ID"
+        },
+        "productCategory": {
+          "type": "string",
+          "title": "Product Category"
+        },
+        "deviceInfo": {
+          "type": "object",
+          "properties": {
+            "type": { "type": "string", "enum": ["desktop", "mobile", "tablet", "other"] },
+            "os": { "type": "string" },
+            "browser": { "type": "string" },
+            "appVersion": { "type": "string" }
+          }
+        },
+        "location": {
+          "type": "object",
+          "properties": {
+            "country": { "type": "string" },
+            "region": { "type": "string" },
+            "city": { "type": "string" },
+            "storeID": { "type": "string" }
+          }
+        },
+        "engagementScore": {
+          "type": "number",
+          "title": "Engagement Score",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "duration": {
+          "type": "integer",
+          "title": "Duration in Seconds"
+        },
+        "metadata": {
+          "type": "object",
+          "title": "Additional Metadata"
+        }
+      },
+      "required": ["interactionID", "timestamp", "channel", "type"]
+    },
+    "engagementSummary": {
+      "type": "object",
+      "properties": {
+        "totalInteractions": {
+          "type": "integer",
+          "title": "Total Interactions",
+          "minimum": 0
+        },
+        "emailOpenRate": {
+          "type": "number",
+          "title": "Email Open Rate",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "emailClickRate": {
+          "type": "number",
+          "title": "Email Click Rate",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "smsResponseRate": {
+          "type": "number",
+          "title": "SMS Response Rate",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "pushOpenRate": {
+          "type": "number",
+          "title": "Push Notification Open Rate",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "preferredChannel": {
+          "type": "string",
+          "enum": ["email", "sms", "push", "web", "mobile-app", "phone", "chat", "in-store"],
+          "title": "Most Engaged Channel"
+        },
+        "lastEngagementDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Last Engagement Date"
+        },
+        "avgEngagementScore": {
+          "type": "number",
+          "title": "Average Engagement Score",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "customerJourneyStage": {
+          "type": "string",
+          "enum": ["prospect", "new-customer", "active-customer", "loyal-customer", "at-risk", "churned"],
+          "default": "prospect"
+        },
+        "npsScore": {
+          "type": "integer",
+          "title": "Net Promoter Score",
+          "minimum": 0,
+          "maximum": 10
+        },
+        "satisfactionScore": {
+          "type": "number",
+          "title": "Satisfaction Score",
+          "minimum": 0,
+          "maximum": 5
+        }
+      }
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/interactionEvent"
+}

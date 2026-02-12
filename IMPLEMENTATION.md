@@ -366,3 +366,170 @@ The architecture provides a clean separation between schema definition, data mod
 **Created:** February 2026  
 **AEM Version:** 6.5 and Cloud Service  
 **Schema Version:** 2020-12
+
+---
+
+## Interactive Communication Extensions (Added February 2026)
+
+### New Schema Definitions
+
+#### 1. Transaction History
+
+**File:** `schema/definitions/transaction.schema.json`
+
+Supports statements and transaction history for interactive communications:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `transactionID` | string | Unique transaction identifier (pattern: TXN-[0-9]{10}) |
+| `transactionType` | enum | purchase, return, refund, redemption, earn, adjustment |
+| `amount` | number | Transaction amount |
+| `pointsEarned` | integer | Points earned from transaction |
+| `channel` | enum | online, mobile, in-store, phone, kiosk |
+| `items` | array | Line item details |
+| `documentOfRecord` | boolean | Generate document of record |
+
+**Transaction Summary Properties:**
+- `totalPurchases`, `totalSpend`, `averageOrderValue`
+- `totalPointsEarned`, `totalPointsRedeemed`
+- `favoriteCategory`, `lastPurchaseDate`
+- `preferredChannel`
+
+#### 2. Account & Subscription
+
+**File:** `schema/definitions/account.schema.json`
+
+Account management with verification and notification settings:
+
+| Category | Properties |
+|----------|------------|
+| Account | `accountID`, `accountStatus`, `accountType`, `createdDate`, `preferredLanguage`, `preferredCurrency`, `timeZone` |
+| Verification | `emailVerified`, `phoneVerified`, `identityVerified`, `addressVerified` |
+| Notifications | `transactionAlerts`, `securityAlerts`, `marketingAlerts`, `pushNotifications`, `alertFrequency` |
+
+**Subscription Entity:**
+- `subscriptionID`, `subscriptionType` (newsletter, product-updates, loyalty-rewards, VIP-access)
+- `status`, `frequency`, `format`, `doubleOptIn`
+
+#### 3. Communication Preferences
+
+**File:** `schema/definitions/communicationPreferences.schema.json`
+
+Comprehensive preferences for interactive communications:
+
+| Category | Properties |
+|----------|------------|
+| Language | 9 languages (en-US, en-GB, fr-FR, de-DE, es-ES, it-IT, ja-JP, zh-CN) |
+| Format | html, text, accessible, print-friendly |
+| Document | `includeImages`, `includePromotions`, `highContrastMode`, `largeTextMode`, `barcodeFormat`, `colorScheme` |
+| Statement | `statementType` (monthly, quarterly, annual, on-demand), `includeTransactionGraph`, `includeOffersSection` |
+| IC Settings | `templateVariant`, `personalizationLevel`, `includeQRCode`, `includeSurvey`, `includeFeedback` |
+| Frequency | `promotionalFrequency`, `transactionalFrequency`, `quietHours`, `blackoutPeriods` |
+
+#### 4. Interaction History
+
+**File:** `schema/definitions/interactionHistory.schema.json`
+
+Customer engagement tracking:
+
+| Property | Description |
+|----------|-------------|
+| `interactionID` | Unique interaction identifier |
+| `channel` | email, sms, push, web, mobile-app, phone, chat, in-store, social |
+| `type` | open, click, purchase, visit, cart-add, cart-abandon, wishlist-add, review-submit, survey-complete, referral, share |
+| `engagementScore` | 0-100 score |
+| `customerJourneyStage` | prospect, new-customer, active-customer, loyal-customer, at-risk, churned |
+
+**Engagement Summary:**
+- `totalInteractions`, `emailOpenRate`, `emailClickRate`
+- `preferredChannel`, `lastEngagementDate`, `avgEngagementScore`
+- `npsScore` (0-10), `satisfactionScore` (0-5)
+
+### New FDM Services
+
+| Service | Operations | Purpose |
+|---------|------------|---------|
+| `transactionService` | getTransactions, getTransactionSummary, generateStatement | Statement generation |
+| `communicationService` | getPreferences, updatePreferences, sendCommunication | Preference management |
+| `subscriptionService` | getSubscriptions, subscribe, unsubscribe | Subscription management |
+| `engagementService` | getInteractions, getEngagementSummary, trackInteraction, getCustomerJourneyStage | Engagement tracking |
+| `accountService` | getAccount, updateAccount, verifyIdentity | Account management |
+| `documentService` | generateDocument, getDocumentHistory | Document generation |
+
+### Interactive Communication Use Cases
+
+#### Statement Generation
+```json
+{
+  "statementType": "monthly",
+  "includeTransactionGraph": true,
+  "includePointsSummary": true,
+  "includeOffersSection": true,
+  "deliveryMethod": "electronic"
+}
+```
+
+#### Personalized Communication
+```json
+{
+  "languagePreference": "fr-FR",
+  "templateVariant": "premium",
+  "personalizationLevel": "full",
+  "includeQRCode": true,
+  "includeSurvey": false
+}
+```
+
+#### Engagement-Based Trigger
+```json
+{
+  "customerJourneyStage": "at-risk",
+  "engagementScore": 45,
+  "preferredChannel": "email"
+}
+```
+
+### Files Reference (Extended)
+
+| File | Purpose | Type |
+|------|---------|------|
+| `schema/definitions/transaction.schema.json` | Transaction history | JSON Schema |
+| `schema/definitions/account.schema.json` | Account & subscription | JSON Schema |
+| `schema/definitions/communicationPreferences.schema.json` | IC preferences | JSON Schema |
+| `schema/definitions/interactionHistory.schema.json` | Engagement tracking | JSON Schema |
+| `fdm/retail-customer-fdm.xml` | FDM (extended) | XML |
+
+### Interactive Communication Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                     Interactive Communication                        │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐│
+│  │  Statement  │  │  Marketing  │  │ Transaction │  │  Personal- ││
+│  │ Generation  │  │  Campaign   │  │  Alert      │  │  ized Offer││
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘│
+│         │                │                │                │       │
+│         └────────────────┼────────────────┼────────────────┘       │
+│                          │                │                          │
+│                          ▼                ▼                          │
+│               ┌──────────┴──────────┐  ┌┴────────────┐              │
+│               │ Communication Prefs │  │ Transaction │              │
+│               │     Entity          │  │   Entity    │              │
+│               └──────────┬──────────┘  └──────┬───────┘              │
+│                          │                   │                       │
+│                          └─────────┬─────────┘                       │
+│                                    │                                 │
+│                                    ▼                                 │
+│               ┌────────────────────┴────────────────────┐             │
+│               │        FDM Services Layer              │             │
+│               │  transactionService, communicationServ │             │
+│               │  ice, engagementService, documentServ  │             │
+│               └────────────────────┬────────────────────┘             │
+│                                    │                                  │
+│                                    ▼                                  │
+│               ┌──────────────────────────────────────┐               │
+│               │        JSON Schema (allOf)           │               │
+│               │   With IC Extensions + Engagement   │               │
+│               └──────────────────────────────────────┘               │
+└─────────────────────────────────────────────────────────────────────┘
+```

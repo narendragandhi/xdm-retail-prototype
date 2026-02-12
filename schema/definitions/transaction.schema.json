@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/transaction.schema.json",
+  "title": "Transaction History Definition",
+  "description": "Reusable transaction component for interactive communications",
+  "$defs": {
+    "transaction": {
+      "type": "object",
+      "properties": {
+        "transactionID": {
+          "type": "string",
+          "title": "Transaction ID",
+          "pattern": "^TXN-[0-9]{10}$"
+        },
+        "transactionDate": {
+          "type": "string",
+          "format": "date-time",
+          "title": "Transaction Date"
+        },
+        "transactionType": {
+          "type": "string",
+          "enum": [
+            "purchase",
+            "return",
+            "refund",
+            "redemption",
+            "earn",
+            "adjustment",
+            "transfer-in",
+            "transfer-out"
+          ],
+          "title": "Transaction Type"
+        },
+        "amount": {
+          "type": "number",
+          "title": "Transaction Amount",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string",
+          "enum": ["USD", "EUR", "GBP", "CAD", "AUD", "JPY"],
+          "default": "USD"
+        },
+        "pointsEarned": {
+          "type": "integer",
+          "title": "Points Earned",
+          "minimum": 0,
+          "default": 0
+        },
+        "pointsRedeemed": {
+          "type": "integer",
+          "title": "Points Redeemed",
+          "minimum": 0,
+          "default": 0
+        },
+        "pointsBalance": {
+          "type": "integer",
+          "title": "Points Balance After Transaction",
+          "minimum": 0
+        },
+        "storeLocation": {
+          "type": "string",
+          "title": "Store Location"
+        },
+        "channel": {
+          "type": "string",
+          "enum": ["online", "mobile", "in-store", "phone", "kiosk"],
+          "title": "Purchase Channel"
+        },
+        "orderNumber": {
+          "type": "string",
+          "title": "Order Number"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "completed", "cancelled", "refunded"],
+          "default": "completed"
+        },
+        "items": {
+          "type": "array",
+          "title": "Line Items",
+          "items": {
+            "type": "object",
+            "properties": {
+              "sku": { "type": "string", "title": "SKU" },
+              "name": { "type": "string", "title": "Product Name" },
+              "quantity": { "type": "integer", "minimum": 1 },
+              "unitPrice": { "type": "number" },
+              "category": { "type": "string" }
+            },
+            "required": ["sku", "name", "quantity"]
+          }
+        },
+        "promotions": {
+          "type": "array",
+          "title": "Applied Promotions",
+          "items": {
+            "type": "object",
+            "properties": {
+              "promoCode": { "type": "string" },
+              "description": { "type": "string" },
+              "discount": { "type": "number" }
+            }
+          }
+        },
+        "documentOfRecord": {
+          "type": "boolean",
+          "title": "Generate Document of Record",
+          "default": true
+        }
+      },
+      "required": ["transactionID", "transactionDate", "transactionType", "amount"]
+    },
+    "transactionSummary": {
+      "type": "object",
+      "properties": {
+        "totalPurchases": {
+          "type": "integer",
+          "title": "Total Purchase Count",
+          "minimum": 0
+        },
+        "totalSpend": {
+          "type": "number",
+          "title": "Total Spend",
+          "minimum": 0
+        },
+        "averageOrderValue": {
+          "type": "number",
+          "title": "Average Order Value"
+        },
+        "totalPointsEarned": {
+          "type": "integer",
+          "title": "Total Points Earned",
+          "minimum": 0
+        },
+        "totalPointsRedeemed": {
+          "type": "integer",
+          "title": "Total Points Redeemed",
+          "minimum": 0
+        },
+        "favoriteCategory": {
+          "type": "string",
+          "title": "Favorite Product Category"
+        },
+        "lastPurchaseDate": {
+          "type": "string",
+          "format": "date",
+          "title": "Last Purchase Date"
+        },
+        "preferredChannel": {
+          "type": "string",
+          "enum": ["online", "mobile", "in-store", "phone", "kiosk"],
+          "title": "Preferred Shopping Channel"
+        }
+      }
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/transaction"
+}

@@ -1,0 +1,250 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/definitions/communicationPreferences.schema.json",
+  "title": "Communication Preferences Definition",
+  "description": "Reusable communication preferences for interactive communications and document generation",
+  "$defs": {
+    "communicationPreferences": {
+      "type": "object",
+      "properties": {
+        "languagePreference": {
+          "type": "string",
+          "enum": ["en-US", "en-GB", "fr-FR", "de-DE", "es-ES", "it-IT", "ja-JP", "zh-CN", "pt-BR"],
+          "default": "en-US"
+        },
+        "formatPreference": {
+          "type": "string",
+          "enum": ["html", "text", "accessible", "print-friendly"],
+          "default": "html"
+        },
+        "deliveryChannel": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "boolean",
+              "title": "Email Delivery",
+              "default": true
+            },
+            "sms": {
+              "type": "boolean",
+              "title": "SMS Delivery",
+              "default": false
+            },
+            "push": {
+              "type": "boolean",
+              "title": "Push Notification",
+              "default": false
+            },
+            "print": {
+              "type": "boolean",
+              "title": "Print/Mail Delivery",
+              "default": false
+            },
+            "inApp": {
+              "type": "boolean",
+              "title": "In-App Notification",
+              "default": true
+            }
+          }
+        },
+        "documentPreferences": {
+          "type": "object",
+          "properties": {
+            "includeImages": {
+              "type": "boolean",
+              "title": "Include Images in Documents",
+              "default": true
+            },
+            "includePromotions": {
+              "type": "boolean",
+              "title": "Include Promotional Content",
+              "default": true
+            },
+            "includeLoyaltyInfo": {
+              "type": "boolean",
+              "title": "Include Loyalty Information",
+              "default": true
+            },
+            "includeTransactionDetails": {
+              "type": "boolean",
+              "title": "Include Full Transaction Details",
+              "default": true
+            },
+            "highContrastMode": {
+              "type": "boolean",
+              "title": "High Contrast Mode for Accessibility",
+              "default": false
+            },
+            "largeTextMode": {
+              "type": "boolean",
+              "title": "Large Text Mode",
+              "default": false
+            },
+            "barcodeFormat": {
+              "type": "string",
+              "enum": ["CODE128", "QR", "EAN13", "UPC", "none"],
+              "default": "CODE128"
+            },
+            "logoPreference": {
+              "type": "string",
+              "enum": ["corporate", "seasonal", "minimal"],
+              "default": "corporate"
+            },
+            "colorScheme": {
+              "type": "string",
+              "enum": ["standard", "grayscale", "high-contrast", "custom"],
+              "default": "standard"
+            },
+            "customFooter": {
+              "type": "string",
+              "title": "Custom Footer Text"
+            }
+          }
+        },
+        "statementPreferences": {
+          "type": "object",
+          "properties": {
+            "statementType": {
+              "type": "string",
+              "enum": ["monthly", "quarterly", "annual", "on-demand"],
+              "default": "monthly"
+            },
+            "includeMiniStatement": {
+              "type": "boolean",
+              "title": "Include Mini Statement",
+              "default": true
+            },
+            "includeTransactionGraph": {
+              "type": "boolean",
+              "title": "Include Transaction Graph",
+              "default": true
+            },
+            "includePointsSummary": {
+              "type": "boolean",
+              "title": "Include Points Summary",
+              "default": true
+            },
+            "includeOffersSection": {
+              "type": "boolean",
+              "title": "Include Personalized Offers",
+              "default": true
+            },
+            "deliveryMethod": {
+              "type": "string",
+              "enum": ["electronic", "print-mail", "both"],
+              "default": "electronic"
+            }
+          }
+        },
+        "interactiveCommunicationSettings": {
+          "type": "object",
+          "properties": {
+            "templateVariant": {
+              "type": "string",
+              "enum": ["standard", "premium", "eco-friendly", "minimal"],
+              "default": "standard"
+            },
+            "personalizationLevel": {
+              "type": "string",
+              "enum": ["none", "basic", "advanced", "full"],
+              "default": "advanced"
+            },
+            "includeDynamicContent": {
+              "type": "boolean",
+              "title": "Include Dynamic Content Blocks",
+              "default": true
+            },
+            "aBTestEnabled": {
+              "type": "boolean",
+              "title": "Enable A/B Testing",
+              "default": false
+            },
+            "variantId": {
+              "type": "string",
+              "title": "A/B Test Variant ID"
+            },
+            "interactiveElements": {
+              "type": "object",
+              "properties": {
+                "includeQRCode": {
+                  "type": "boolean",
+                  "title": "Include QR Code",
+                  "default": true
+                },
+                "includeSurvey": {
+                  "type": "boolean",
+                  "title": "Include Satisfaction Survey",
+                  "default": false
+                },
+                "includeFeedback": {
+                  "type": "boolean",
+                  "title": "Include Feedback Form",
+                  "default": false
+                },
+                "includeSocialSharing": {
+                  "type": "boolean",
+                  "title": "Include Social Sharing Links",
+                  "default": false
+                }
+              }
+            }
+          }
+        },
+        "frequencyPreferences": {
+          "type": "object",
+          "properties": {
+            "promotionalFrequency": {
+              "type": "string",
+              "enum": ["daily", "weekly", "monthly", "quarterly", "special-events-only"],
+              "default": "weekly"
+            },
+            "transactionalFrequency": {
+              "type": "string",
+              "enum": ["immediate", "daily-digest", "weekly-digest", "none"],
+              "default": "immediate"
+            },
+            "quietHours": {
+              "type": "object",
+              "properties": {
+                "enabled": {
+                  "type": "boolean",
+                  "title": "Quiet Hours Enabled",
+                  "default": false
+                },
+                "startTime": {
+                  "type": "string",
+                  "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+                  "title": "Start Time"
+                },
+                "endTime": {
+                  "type": "string",
+                  "pattern": "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
+                  "title": "End Time"
+                },
+                "timezone": {
+                  "type": "string",
+                  "title": "Timezone"
+                }
+              }
+            },
+            "blackoutPeriods": {
+              "type": "array",
+              "title": "Communication Blackout Periods",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "startDate": { "type": "string", "format": "date" },
+                  "endDate": { "type": "string", "format": "date" },
+                  "reason": { "type": "string" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "required": ["languagePreference", "formatPreference"]
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/communicationPreferences"
+}
